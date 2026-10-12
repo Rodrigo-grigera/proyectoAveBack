@@ -1,27 +1,17 @@
-import { IsInt, IsNumber, IsPositive, IsString, Min } from 'class-validator';
-import { DeleteDateColumn } from 'typeorm';
+import { IsOptional, IsString, MaxLength } from 'class-validator';
 
 export class ProductoDto {
 
     @IsString()
+    @MaxLength(100)
     nombre!: string;
 
     @IsString()
+    @MaxLength(100)
     marca!: string;
 
     @IsString()
-    descripcion!: string;
-
-    @IsNumber()
-    @Min(0)
-    precio!: number;
-
-    @IsInt()
-    @Min(0)
-    stock!: number;
-
-    @IsNumber()
-    @IsPositive()
-    id_categoria!: number;
-
+    @MaxLength(500)
+    @IsOptional()
+    descripcion?: string;
 }

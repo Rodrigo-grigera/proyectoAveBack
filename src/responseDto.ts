@@ -1,4 +1,3 @@
-import { Producto } from "./producto/entities/producto.entity";
 
 export interface ResponseDto<T>{
     code: number;

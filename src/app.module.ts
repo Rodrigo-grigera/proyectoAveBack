@@ -4,8 +4,9 @@ import { ConfigModule } from '@nestjs/config';
 import { ProductoModule } from './producto/producto.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Producto } from './producto/entities/producto.entity';
-import { CategoriaModule } from './categoria/categoria.module';
-import { Categoria } from './categoria/entities/categoria.entity';
+import { StockModule } from './stock/stock.module';
+import { Stock } from './stock/entities/stock.entity';
+
 
 @Module({
   imports: [
@@ -13,13 +14,12 @@ import { Categoria } from './categoria/entities/categoria.entity';
     TypeOrmModule.forRoot({
       type: 'mysql',
       host: process.env.DB_HOST,
-      port: Number(process.env.DB_PORT),
+      database: process.env.DB_NAME,
       username: process.env.DB_USER,
       password: process.env.DB_PASSWORD,
-      database: process.env.DB_NAME,
       synchronize: true,
-      entities: [Producto, Categoria]
+      entities: [Producto, Stock],
     })
-    , ProductoModule, CategoriaModule],
+    , ProductoModule, StockModule],
 })
 export class AppModule { }

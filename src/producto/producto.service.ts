@@ -5,34 +5,17 @@ import { Producto } from './entities/producto.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { ResponseDto } from '../responseDto';
-import { Categoria } from 'src/categoria/entities/categoria.entity';
 
 
 @Injectable()
 export class ProductoService {
-  constructor(@InjectRepository(Producto) private readonly producRepository: Repository<Producto>,
-    @InjectRepository(Categoria) private readonly categoriaRepository: Repository<Categoria>,) { };
+  constructor(@InjectRepository(Producto) private readonly producRepository: Repository<Producto>) { };
 
   async create(producto: ProductoDto): Promise<ResponseDto<Producto>> {
-    const categoria = await this.categoriaRepository.findOne({
-      where: {
-        id_categoria: producto.id_categoria,
-      },
-    });
-
-    if (!categoria) {
-      throw new NotFoundException('La categoría no existe');
+    const newProducto = this.producRepository.create(producto);
+    if(!newProducto) {
+      throw new NotFoundException('No se pudo crear el producto');
     }
-
-    const newProducto = this.producRepository.create({
-      nombre: producto.nombre,
-      marca: producto.marca,
-      descripcion: producto.descripcion,
-      precio: producto.precio,
-      stock: producto.stock,
-      categoria,
-    });
-
     const productoGuardado = await this.producRepository.save(newProducto);
 
     return {
@@ -42,7 +25,11 @@ export class ProductoService {
   }
 
   async findAll(): Promise<ResponseDto<Producto>> {
-    const resp = await this.producRepository.find();
+    const resp = await this.producRepository.find({
+      relations: {
+        conteo_stock: true,
+      }
+    });
     if (!resp || resp.length === 0) throw new NotFoundException('No se encontraron productos');
     return {
       code: HttpStatus.OK,
@@ -50,25 +37,19 @@ export class ProductoService {
       data: resp
     };
   }
-
-  async findProdCategory(idCateg: number): Promise<ResponseDto<Producto>> {
+async getNombre (nombre: string) : Promise <ResponseDto<Producto>>{
     const resp = await this.producRepository.find({
       where: {
-        categoria: { id_categoria: idCateg },
-      },
-      relations: {
-        categoria: true
+        nombre: nombre,
       }
-    })
-
-    if (!resp || resp.length === 0) throw new NotFoundException('No se encontraron productos de esa cartegoria')
+    });
+    if (!resp || resp.length === 0) throw new NotFoundException('No se encontraron productos');
     return {
       code: HttpStatus.OK,
-      message: 'Productos encontrados',
-      data: resp,
+      message: 'Producto encontrado',
+      data: resp
     };
   }
-
 
   async findOne(id: number): Promise<ResponseDto<Producto>> {
     const resp = await this.producRepository.findOne({ where: { id_producto: id } });

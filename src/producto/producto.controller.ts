@@ -16,11 +16,10 @@ export class ProductoController {
   findAll() {
     return this.productoService.findAll();
   }
-
-  @Get('categoria/:id')
-  findByCategoria(@Param('id', ParseIntPipe) id_categoria: number,
-  ) {
-    return this.productoService.findProdCategory(id_categoria);
+  
+  @Get('nombre/:nombre')
+  getNombre(@Param('nombre') nombre: string) {
+    return this.productoService.getNombre(nombre);
   }
 
   @Get(':id')
@@ -31,6 +30,11 @@ export class ProductoController {
   @Patch(':id')
   update(@Param('id') id: string, @Body() Producto: UpdateProductoDto) {
     return this.productoService.update(+id, Producto);
+  }
+
+  @Patch('restore/:id')
+  restore(@Param('id', ParseIntPipe) id: number) {
+    return this.productoService.restore(id);
   }
 
   @Delete(':id')
