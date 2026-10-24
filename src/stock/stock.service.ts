@@ -53,6 +53,9 @@ export class StockService {
       relations: {
         producto: true,
       },
+      order: {
+        fecha_vencimiento: 'ASC',
+      },
     });
     if (!resp || resp.length === 0) {
       throw new NotFoundException('No hay stock guardados');
