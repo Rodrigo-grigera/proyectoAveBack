@@ -6,8 +6,12 @@ export class StockDto {
   @IsPositive()
   id_producto!: number;
 
+  @IsInt()
+  @IsPositive()
+  id_deposito!: number;
+
   @IsDateString()
-  fecha!: string;
+  fecha_vencimiento!: string;
 
   @IsInt()
   @Min(0)

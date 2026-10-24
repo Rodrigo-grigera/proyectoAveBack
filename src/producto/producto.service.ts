@@ -21,6 +21,7 @@ export class ProductoService {
     return {
       code: HttpStatus.CREATED,
       message: 'Producto creado con éxito',
+      data: productoGuardado
     };
   }
 

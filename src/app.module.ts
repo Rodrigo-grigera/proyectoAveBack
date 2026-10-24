@@ -6,6 +6,8 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { Producto } from './producto/entities/producto.entity';
 import { StockModule } from './stock/stock.module';
 import { Stock } from './stock/entities/stock.entity';
+import { DepositoModule } from './deposito/deposito.module';
+import { Deposito } from './deposito/entities/deposito.entity';
 
 
 @Module({
@@ -18,8 +20,8 @@ import { Stock } from './stock/entities/stock.entity';
       username: process.env.DB_USER,
       password: process.env.DB_PASSWORD,
       synchronize: true,
-      entities: [Producto, Stock],
+      entities: [Producto, Stock, Deposito],
     })
-    , ProductoModule, StockModule],
+    , ProductoModule, StockModule, DepositoModule],
 })
 export class AppModule { }

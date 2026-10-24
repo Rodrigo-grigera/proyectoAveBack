@@ -31,7 +31,7 @@ export class StockService {
     const stockExistente = await this.stockRepository.findOne({
       where: {
         id_producto: createStockDto.id_producto,
-        fecha: createStockDto.fecha,
+        fecha_vencimiento: createStockDto.fecha_vencimiento,
       },
     });
 
