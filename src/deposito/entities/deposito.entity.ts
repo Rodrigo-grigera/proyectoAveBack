@@ -1,5 +1,5 @@
 import { Stock } from "src/stock/entities/stock.entity";
-import { Entity, PrimaryGeneratedColumn, Column, OneToMany, CreateDateColumn, UpdateDateColumn } from "typeorm";
+import { Entity, PrimaryGeneratedColumn, Column, OneToMany, CreateDateColumn, UpdateDateColumn, DeleteDateColumn } from "typeorm";
 
 
 @Entity('depositos')
@@ -16,9 +16,6 @@ export class Deposito {
   @OneToMany(() => Stock, (stock) => stock.deposito)
   conteo_stock!: Stock[];
 
-  @CreateDateColumn()
-  createdAt!: Date;
-
-  @UpdateDateColumn()
-  updatedAt!: Date;
+ @DeleteDateColumn()
+  deletedAt!: Date;
 }

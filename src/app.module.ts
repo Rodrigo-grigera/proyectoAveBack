@@ -8,11 +8,17 @@ import { StockModule } from './stock/stock.module';
 import { Stock } from './stock/entities/stock.entity';
 import { DepositoModule } from './deposito/deposito.module';
 import { Deposito } from './deposito/entities/deposito.entity';
+import { UsuarioModule } from './usuario/usuario.module';
+import { AuthModule } from './auth/auth.module';
+import { Usuario } from './usuario/entities/usuario.entity';
+import { SeedModule } from './seeders/seed.module';
 
 
 @Module({
   imports: [
-    ConfigModule.forRoot(),
+    ConfigModule.forRoot({
+       isGlobal: true,
+    }),
     TypeOrmModule.forRoot({
       type: 'mysql',
       host: process.env.DB_HOST,
@@ -20,8 +26,8 @@ import { Deposito } from './deposito/entities/deposito.entity';
       username: process.env.DB_USER,
       password: process.env.DB_PASSWORD,
       synchronize: true,
-      entities: [Producto, Stock, Deposito],
+      entities: [Producto, Stock, Deposito, Usuario],
     })
-    , ProductoModule, StockModule, DepositoModule],
+    , ProductoModule, StockModule, DepositoModule, UsuarioModule, AuthModule, SeedModule],
 })
 export class AppModule { }

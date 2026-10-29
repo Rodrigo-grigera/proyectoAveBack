@@ -26,12 +26,6 @@ export class Producto {
   @OneToMany(() => Stock, (conteo) => conteo.producto)
   conteo_stock!: Stock[];
 
-  @CreateDateColumn()
-  createdAt!: Date;
-
-  @UpdateDateColumn()
-  updatedAt!: Date;
-
   @DeleteDateColumn()
   deletedAt!: Date;
 }
