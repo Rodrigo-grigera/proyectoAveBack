@@ -34,6 +34,7 @@ export class DepositoService {
     };
   }
 
+
   async findOne(id: number) : Promise <ResponseDto<Deposito>> {
     const deposito = await this.depositoRepository.findOne({ where: { id_deposito : id } });
     if (!deposito) {

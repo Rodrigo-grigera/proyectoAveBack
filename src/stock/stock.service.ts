@@ -11,6 +11,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { ResponseDto } from 'src/responseDto';
 import { Producto } from 'src/producto/entities/producto.entity';
+import { StockTotalDto } from './dto/StockTotalDto';
 
 @Injectable()
 export class StockService {
@@ -68,6 +69,46 @@ export class StockService {
     };
   }
 
+async  obtenerStockTotal():Promise<ResponseDto<StockTotalDto>> {
+     const resp = await this.stockRepository.find({
+    relations: {
+      producto: true,
+    },
+  });
+
+  if (!resp || resp.length === 0) {
+    throw new NotFoundException('No hay stock registrado');
+  }
+
+  const stockTotal: StockTotalDto [] = [];
+
+  for (const stock of resp) {
+    const productoExistente = stockTotal.find(
+      (p) => p.id_producto === stock.id_producto,
+    );
+
+    if (productoExistente) {
+      productoExistente.cantidad_bulto += stock.cantidad_bulto;
+      productoExistente.cantidad_unidades += stock.cantidad_unidades;
+    } else {
+      stockTotal.push({
+        id_producto: stock.id_producto,
+        nombre: stock.producto.marca,
+        descripcion: stock.producto.descripcion,
+        cantidad_bulto: stock.cantidad_bulto,
+        cantidad_unidades: stock.cantidad_unidades,
+      });
+    }
+  }
+
+  return {
+    code: HttpStatus.OK,
+    message: 'Stock total por producto',
+    data: stockTotal,
+  };
+
+}
+ 
   async findOne(id: number): Promise<ResponseDto<Stock>> {
     const resp = await this.stockRepository.findOne({
       where: { id_stock: id },

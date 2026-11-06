@@ -19,6 +19,10 @@ export class StockController {
     return this.stockService.findAll();
   }
 
+  @Get('total')
+  obtenerStockTotal() {
+  return this.stockService.obtenerStockTotal();
+}
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.stockService.findOne(+id);
